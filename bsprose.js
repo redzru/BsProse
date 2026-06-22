@@ -1,13 +1,15 @@
+// noinspection ES6ConvertVarToLetConst, JSUnusedGlobalSymbols, JSUnresolvedReference, JSDeprecatedSymbols, JSCheckFunctionSignatures, JSValidateTypes, GrazieInspection, SpellCheckingInspection, JSUnusedLocalSymbols
+
 /*!
  * BsProse — a tiny, dependency-free WYSIWYG content editor for Bootstrap 5 sites.
  * ---------------------------------------------------------------------------
  * Why it exists: classic rich-text editors (Quill, TinyMCE, …) keep their own
  * document model and RE-PARSE the HTML through a format registry, so any markup
- * they don't recognise — Bootstrap components like .alert/.card/.accordion/.row —
+ * they don't recognize — Bootstrap components like .alert/.card/.accordion/.row —
  * gets silently stripped on every visual<->source round-trip.
  *
  * BsProse has NO intermediate model: the DOM *is* the document. Prose (headings,
- * paragraphs, lists, links, inline marks, colours, images) is edited natively in a
+ * paragraphs, lists, links, inline marks, colors, images) is edited natively in a
  * single contenteditable surface. Bootstrap components live as "block islands"
  * (contenteditable=false wrappers) that are moved / edited-as-HTML / deleted as a
  * unit and round-trip BYTE-FOR-BYTE. A global HTML-source toggle is the escape
@@ -330,7 +332,7 @@
 		this.surface.addEventListener('keydown', function (e) {
 			if (self.sourceMode) { return; }
 			// Own history (the browser's native undo is unreliable once we mutate the DOM directly for
-			// islands / colours / grids), so Ctrl/Cmd+Z and Ctrl/Cmd+Y|Shift+Z drive our snapshot stack.
+			// islands / colors / grids), so Ctrl/Cmd+Z and Ctrl/Cmd+Y|Shift+Z drive our snapshot stack.
 			if (e.ctrlKey || e.metaKey) {
 				var k = (e.key || '').toLowerCase();
 				if (k === 'z') { e.preventDefault(); if (e.shiftKey) { self.redo(); } else { self.undo(); } return; }
@@ -393,7 +395,7 @@
 			var node = make[tok] ? make[tok]() : null;
 			if (node) { self.tb.appendChild(node); }
 		});
-		// HTML-source toggle is ALWAYS the right-most control, labelled "HTML".
+		// HTML-source toggle is ALWAYS the right-most control, labeled "HTML".
 		if (this.sourceToggle) {
 			this.srcBtn = btn('HTML', 'HTML source', function (b) { self._toggleSource(b); });
 			this.srcBtn.classList.add('bsprose-src-btn');
@@ -432,7 +434,7 @@
 		var self = this;
 		return this._dropdown('Text', 'Text style', function (menu, close) {
 			menu.appendChild(self._menuItem('Text (line breaks)', function () { self._textBlock(); }, close));
-			// formatBlock REPLACES the current block's tag, so switching e.g. H1→H2 changes it (never nests/duplicates).
+			// formatBlock REPLACES the current block's tag, so switching e.g., H1→H2 changes it (never nests/duplicates).
 			[['p', 'Paragraph'], ['h1', 'Heading 1'], ['h2', 'Heading 2'], ['h3', 'Heading 3'], ['h4', 'Heading 4'], ['h5', 'Heading 5'], ['blockquote', 'Quote'], ['pre', 'Code block']].forEach(function (it) {
 				menu.appendChild(self._menuItem(it[1], function () { self._exec('formatBlock', '<' + it[0] + '>'); }, close));
 			});
@@ -558,11 +560,11 @@
 		this._commit();
 	};
 
-	/* ── colours (inline), alignment (block), float (element) ── */
-	// Apply (or, with cls='', remove) a text-colour / background class to the selection. Text colour AND
+	/* ── colors (inline), alignment (block), float (element) ── */
+	// Apply (or, with cls='', remove) a text-color / background class to the selection. Text color AND
 	// background live in the SAME <span class> — never nested spans. If the selection already sits in a span
 	// stack, those spans are merged into one and the relevant group class is swapped/removed; an empty span
-	// (last colour removed) is unwrapped. cls='' just removes the group → makes "Remove colour" work.
+	// (last color removed) is unwrapped. cls='' just removes the group → makes "Remove colour" work.
 	Editor.prototype._applyInline = function (cls, groupRe) {
 		if (this.sourceMode) { return; }
 		this.surface.focus();
@@ -605,13 +607,13 @@
 			return;
 		}
 
-		// General case (plain text / partial selection): extract, flatten any colour-only spans inside
+		// General case (plain text / partial selection): extract, flatten any color-only spans inside
 		// (carrying their classes over), then wrap the result in ONE span with the merged class set.
 		var frag = range.extractContents();
 		var keep = [];
 		Array.prototype.slice.call(frag.querySelectorAll('span')).forEach(function (s) {
 			var c = classList(s), col = c.filter(function (x) { return COLOR_RE.test(x) || BG_RE.test(x); });
-			if (col.length && col.length === c.length) {           // colour-only span → unwrap, keep its classes
+			if (col.length && col.length === c.length) { // color-only span → unwrap, keep its classes
 				col.forEach(function (x) { if (keep.indexOf(x) < 0) { keep.push(x); } });
 				while (s.firstChild) { s.parentNode.insertBefore(s.firstChild, s); }
 				s.remove();
@@ -669,7 +671,7 @@
 	};
 
 	/* ── link dialog (colour + target + rel; create OR edit an existing link) ── */
-	// The <a> is built/updated directly (not via execCommand) so target / rel / colour are reliably applied,
+	// The <a> is built/updated directly (not via execCommand) so target / rel / color are reliably applied,
 	// and an existing link under the caret is detected → its attributes prefill the dialog and are updated
 	// in place instead of nesting a new anchor inside it.
 	Editor.prototype._linkDialog = function () {
@@ -792,7 +794,7 @@
 		tools.appendChild(t(ICON.down, 'Move down', function () { self._moveIsland(isl, 1); }));
 		var body = elm('div', 'bsprose-island-body', innerHtml);
 		// Heal embeds authored before referrerpolicy support: a missing policy makes YouTube/Vimeo throw a
-		// "configuration error" whenever the host page sends no referrer (e.g. Referrer-Policy: same-origin).
+		// "configuration error" whenever the host page sends no referrer (e.g., Referrer-Policy: same-origin).
 		body.querySelectorAll('iframe:not([referrerpolicy])').forEach(function (f) { f.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin'); });
 		// A grid island (root .row) gets a visual grid editor in addition to raw Edit HTML.
 		if (this.grid && body.firstElementChild && /(^|\s)row(\s|$)/.test(body.firstElementChild.className || '')) {
@@ -961,7 +963,7 @@
 			}
 		});
 	};
-	// Normalise common video URLs to an embeddable src. Covers YouTube watch / youtu.be / embed / shorts / live,
+	// Normalize common video URLs to an embeddable src. Covers YouTube watch / youtu.be / embed / shorts / live,
 	// and Vimeo. Anything else is used verbatim (assumed already embeddable).
 	Editor.prototype._embedUrl = function (url) {
 		if (!url) { return ''; }
@@ -972,7 +974,7 @@
 		return url;
 	};
 
-	/* ── paste sanitiser: keep structural prose tags, drop attributes/styles ── */
+	/* ── paste sanitizer: keep structural prose tags, drop attributes/styles ── */
 	Editor.prototype._onPaste = function (e) {
 		if (this.sourceMode) { return; }
 		var cd = e.clipboardData || window.clipboardData;
@@ -1004,7 +1006,7 @@
 		return tmp.innerHTML;
 	};
 
-	/* ── load / serialise ── */
+	/* ── load / serialize ── */
 	Editor.prototype.setHTML = function (html) {
 		if (this.sourceMode) { this.source.value = html || ''; return; }
 		var tmp = elm('div', null, html || '');
@@ -1057,7 +1059,7 @@
 			if (n.hasAttribute('data-list')) { n.removeAttribute('data-list'); }
 			Array.prototype.slice.call(n.attributes).forEach(function (a) { if (a.name.indexOf('data-bsp') === 0) { n.removeAttribute(a.name); } });
 		});
-		// Unwrap attribute-less spans (e.g. after a colour was removed).
+		// Unwrap attribute-less spans (e.g., after a color was removed).
 		Array.prototype.slice.call(clone.querySelectorAll('span')).forEach(function (s) {
 			if (!s.attributes.length) { while (s.firstChild) { s.parentNode.insertBefore(s.firstChild, s); } s.remove(); }
 		});
