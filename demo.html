@@ -95,6 +95,7 @@
           <a href="#ex-3" class="list-group-item list-group-item-action">3. Image sources</a>
           <a href="#ex-4" class="list-group-item list-group-item-action">4. Custom components</a>
           <a href="#ex-5" class="list-group-item list-group-item-action">5. Dark theme + API</a>
+          <a href="#ex-6" class="list-group-item list-group-item-action">6. Responsive images</a>
           <a href="#cheatsheet" class="list-group-item list-group-item-action">Cheat sheet</a>
         </div>
       </div>
@@ -211,7 +212,7 @@ BsProse.<span class="tok-key">create</span>(<span class="tok-str">'#editor-2'</s
   id: <span class="tok-str">'gallery'</span>, label: <span class="tok-str">'Media library (demo)'</span>,
   open(api) {
     api.<span class="tok-key">insert</span>({
-      src: <span class="tok-str">'https://picsum.photos/seed/bsprose/640/360'</span>,
+      src: <span class="tok-str">'https://placehold.co/640x360'</span>,
       alt: <span class="tok-str">'Random photo'</span>, class: <span class="tok-str">'img-fluid rounded shadow-sm'</span>
     });
   }
@@ -308,6 +309,95 @@ BsProse.<span class="tok-key">create</span>(<span class="tok-str">'#editor-4'</s
         </div>
       </section>
 
+      <!-- ═══════════ EXAMPLE 6 ═══════════ -->
+      <section id="ex-6" class="bsp-section mb-5">
+        <div class="card shadow-sm">
+          <div class="card-header bg-transparent">
+            <h2 class="h4 mb-1">6. Responsive images: <code>srcset</code> &amp; <code>&lt;picture&gt;</code></h2>
+            <p class="text-body-secondary mb-0 small">
+              The image spec can carry <code>srcset</code>/<code>sizes</code> (a DPR-aware
+              <code>&lt;img&gt;</code>) or <code>sources</code> (a viewport-driven <code>&lt;picture&gt;</code>).
+            </p>
+          </div>
+          <div class="card-body">
+            <p class="mb-2">
+              Any image source (URL, upload or a custom gallery) resolves an
+              <em>image spec</em>. Beyond <code>src</code> you may add:
+            </p>
+            <ul class="mb-3">
+              <li>
+                <code>srcset</code> + <code>sizes</code> — the editor outputs a plain
+                <code>&lt;img srcset sizes&gt;</code>. The browser picks a candidate by the
+                rendered size <strong>× device-pixel-ratio</strong> — great for HiDPI/Retina,
+                but it never downsizes once a larger file is cached.
+              </li>
+              <li>
+                <code>sources</code> — an array of
+                <code>{ media, type, srcset, sizes }</code>. The editor emits a
+                <code>&lt;picture&gt;</code> with <code>&lt;source media&gt;</code> rules: a
+                <strong>hard, viewport-driven</strong> switch re-evaluated on resize (narrower
+                window → smaller file). The plain <code>&lt;img&gt;</code> becomes the
+                largest/default fallback and drops its own <code>srcset</code>/<code>sizes</code>.
+              </li>
+            </ul>
+            <p class="mb-2">
+              The two custom sources below insert each variant. Open the image chooser and pick
+              one, then inspect the <code>getHTML()</code> output to see <code>&lt;img srcset&gt;</code>
+              versus <code>&lt;picture&gt;</code>.
+            </p>
+            <pre class="bsp-code p-3"><code><span class="tok-com">// Example 6 — two responsive-image specs</span>
+
+<span class="tok-com">// (a) DPR-aware &lt;img srcset sizes&gt;</span>
+<span class="tok-key">const</span> srcsetSource = {
+  id: <span class="tok-str">'srcset'</span>, label: <span class="tok-str">'Insert &lt;img srcset&gt;'</span>,
+  open(api) {
+    api.<span class="tok-key">insert</span>({
+      src:    <span class="tok-str">'https://placehold.co/1280x720'</span>,
+      srcset: <span class="tok-str">'https://placehold.co/480x270 480w, '</span> +
+              <span class="tok-str">'https://placehold.co/960x540 960w, '</span> +
+              <span class="tok-str">'https://placehold.co/1280x720 1280w'</span>,
+      sizes:  <span class="tok-str">'(max-width: 960px) 100vw, 960px'</span>,
+      width: 1280, height: 720, alt: <span class="tok-str">'Responsive photo'</span>,
+      class: <span class="tok-str">'img-fluid rounded shadow-sm'</span>
+    });
+  }
+};
+
+<span class="tok-com">// (b) viewport-driven &lt;picture&gt; via `sources`</span>
+<span class="tok-key">const</span> pictureSource = {
+  id: <span class="tok-str">'picture'</span>, label: <span class="tok-str">'Insert &lt;picture&gt;'</span>,
+  open(api) {
+    api.<span class="tok-key">insert</span>({
+      src: <span class="tok-str">'https://placehold.co/1280x720'</span>,   <span class="tok-com">// fallback / largest</span>
+      sources: [
+        { media: <span class="tok-str">'(max-width: 575.98px)'</span>,  srcset: <span class="tok-str">'https://placehold.co/480x270'</span> },
+        { media: <span class="tok-str">'(max-width: 1199.98px)'</span>, srcset: <span class="tok-str">'https://placehold.co/960x540'</span> }
+      ],
+      width: 1280, height: 720, alt: <span class="tok-str">'Art-directed photo'</span>,
+      class: <span class="tok-str">'img-fluid rounded shadow-sm'</span>
+    });
+  }
+};
+
+BsProse.<span class="tok-key">create</span>(<span class="tok-str">'#editor-6'</span>, {
+  image: { sources: [ srcsetSource, pictureSource ] },
+  toolbar: [<span class="tok-str">'format'</span>, <span class="tok-str">'|'</span>, <span class="tok-str">'bold'</span>, <span class="tok-str">'italic'</span>, <span class="tok-str">'|'</span>, <span class="tok-str">'align'</span>, <span class="tok-str">'|'</span>, <span class="tok-str">'image'</span>],
+  onChange: html =&gt; out6.textContent = html
+});</code></pre>
+            <label class="form-label fw-semibold">Editor:</label>
+            <div id="editor-6"></div>
+            <div class="mt-3">
+              <span class="badge text-bg-secondary">getHTML() result</span>
+              <pre class="bsp-output border rounded bg-body p-2 mt-1 mb-0" id="out6"></pre>
+            </div>
+            <p class="text-body-secondary small mt-3 mb-0">
+              Rule of thumb: pass only <code>srcset</code> for the DPR-aware default; pass
+              <code>sources</code> when you want a hard, art-directed switch by viewport.
+            </p>
+          </div>
+        </div>
+      </section>
+
       <!-- ═══════════ CHEAT SHEET ═══════════ -->
       <section id="cheatsheet" class="bsp-section mb-4">
         <h2 class="h3 border-bottom pb-2 mb-3">Options cheat sheet</h2>
@@ -338,6 +428,11 @@ BsProse.<span class="tok-key">create</span>(<span class="tok-str">'#editor-4'</s
           <code>embed</code>, <code>component</code>, <code>grid</code>, <code>clean</code>,
           <code>|</code>.
         </p>
+        <p class="text-body-secondary small mb-0 mt-2">
+          Image spec fields: <code>src</code> (required), <code>srcset</code>, <code>sizes</code>
+          (→ responsive <code>&lt;img&gt;</code>), <code>sources</code> (→ <code>&lt;picture&gt;</code>),
+          <code>alt</code>, <code>width</code>, <code>height</code>, <code>class</code>. See example 6.
+        </p>
       </section>
 
     </main>
@@ -367,6 +462,7 @@ BsProse.<span class="tok-key">create</span>(<span class="tok-str">'#editor-4'</s
     const out3 = document.getElementById('out3');
     const out4 = document.getElementById('out4');
     const out5 = document.getElementById('out5');
+    const out6 = document.getElementById('out6');
 
     // ── Example 1: full default editor ──
     const ed1 = BsProse.create('#editor-1', {
@@ -394,7 +490,7 @@ BsProse.<span class="tok-key">create</span>(<span class="tok-str">'#editor-4'</s
       id: 'gallery', label: 'Media library (demo)',
       open: function (api) {
         api.insert({
-          src: 'https://picsum.photos/seed/bsprose/640/360',
+          src: 'https://placehold.co/640x360',
           alt: 'Random photo', width: 640, height: 360,
           class: 'img-fluid rounded shadow-sm'
         });
@@ -450,6 +546,45 @@ BsProse.<span class="tok-key">create</span>(<span class="tok-str">'#editor-4'</s
     document.getElementById('btn-src').addEventListener('click', function () {
       ed5.setSourceMode(!ed5.isSourceMode());
     });
+
+    // ── Example 6: responsive images (srcset & <picture>) ──
+    // (a) DPR-aware <img srcset sizes> — browser picks by rendered size × DPR.
+    const srcsetSource = {
+      id: 'srcset', label: 'Insert <img srcset>',
+      open: function (api) {
+        api.insert({
+          src: 'https://placehold.co/1280x720',
+          srcset: 'https://placehold.co/480x270 480w, ' +
+            'https://placehold.co/960x540 960w, ' +
+            'https://placehold.co/1280x720 1280w',
+          sizes: '(max-width: 960px) 100vw, 960px',
+          width: 1280, height: 720, alt: 'Responsive photo',
+          class: 'img-fluid rounded shadow-sm'
+        });
+      }
+    };
+    // (b) viewport-driven <picture> via `sources` — hard switch, re-evaluated on resize.
+    const pictureSource = {
+      id: 'picture', label: 'Insert <picture>',
+      open: function (api) {
+        api.insert({
+          src: 'https://placehold.co/1280x720',   // fallback / largest
+          sources: [
+            { media: '(max-width: 575.98px)', srcset: 'https://placehold.co/480x270' },
+            { media: '(max-width: 1199.98px)', srcset: 'https://placehold.co/960x540' }
+          ],
+          width: 1280, height: 720, alt: 'Art-directed photo',
+          class: 'img-fluid rounded shadow-sm'
+        });
+      }
+    };
+    const ed6 = BsProse.create('#editor-6', {
+      image: { sources: [ srcsetSource, pictureSource ] },
+      toolbar: ['format', '|', 'bold', 'italic', '|', 'align', '|', 'image'],
+      value: '<h3>Responsive images</h3>Open the image chooser and pick a variant, then check the output below.',
+      onChange: function (html) { out6.textContent = html; }
+    });
+    out6.textContent = ed6.getHTML();
 
     // Refresh scrollspy after editors changed the page height.
     const spy = window.bootstrap.ScrollSpy.getOrCreateInstance(document.body);
