@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BsProse — демо и примеры использования</title>
+
+  <!-- Bootstrap 5.3.8 CSS from CDN (BsProse's required dependency) -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        crossorigin="anonymous">
+
+  <!-- Bootstrap Icons from CDN -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Minimal custom styles: only what Bootstrap doesn't provide -->
+  <style>
+    :root { scroll-behavior: smooth; }
+    .bsp-hero {
+      background: linear-gradient(135deg,
+      rgba(var(--bs-primary-rgb), .12),
+      rgba(var(--bs-info-rgb), .10) 50%,
+      rgba(var(--bs-success-rgb), .10));
+    }
+    .bsp-code {
+      background: var(--bs-dark);
+      color: var(--bs-light);
+      border-radius: var(--bs-border-radius);
+      font-size: .82rem;
+      overflow: auto;
+    }
+    .bsp-code .tok-key { color: #c792ea; }
+    .bsp-code .tok-str { color: #c3e88d; }
+    .bsp-code .tok-com { color: #6c7a89; font-style: italic; }
+    body { padding-top: 3.5rem; }
+    .bsp-sticky-nav { top: 4.5rem; }
+    .bsp-section { scroll-margin-top: 4.5rem; }
+    .bsp-output {
+      max-height: 16rem; overflow: auto;
+      font-family: var(--bs-font-monospace),monospace;
+      font-size: .78rem; white-space: pre-wrap; word-break: break-word;
+    }
+  </style>
+</head>
+<body class="bg-body-tertiary"
+      data-bs-spy="scroll"
+      data-bs-target="#bsp-nav"
+      data-bs-smooth-scroll="true"
+      data-bs-root-margin="0px 0px -45%"
+      tabindex="0">
+
+<!-- ════════════════════ FIXED TOP MENU ════════════════════ -->
+<nav class="navbar navbar-expand-lg bg-body border-bottom fixed-top shadow-sm">
+  <div class="container">
+    <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="index_ru.html">
+      <i class="bi bi-pencil-square text-primary"></i> BsProse
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#bsp-topnav" aria-controls="bsp-topnav"
+            aria-expanded="false" aria-label="Переключить навигацию">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="bsp-topnav">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center gap-1" href="https://github.com/redzru/BsProse" target="_blank" rel="noopener">
+            <i class="bi bi-github"></i> GitHub
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center gap-1" href="https://github.com/redzru/BsProse/blob/master/changelog.md" target="_blank" rel="noopener">
+            <i class="bi bi-card-list"></i> Список изменений
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center gap-1" href="https://github.com/redzru/BsProse/blob/master/README.md" target="_blank" rel="noopener">
+            <i class="bi bi-book"></i> Документация
+          </a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle d-flex align-items-center gap-1" href="#" role="button"
+             data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-translate"></i> RU
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="index.html">English</a></li>
+            <li><a class="dropdown-item active" href="index_ru.html">Русский</a></li>
+            <li><a class="dropdown-item" href="index_th.html">ไทย</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ════════════════════ HERO / HEADER ════════════════════ -->
+<header class="bsp-hero border-bottom">
+  <div class="container py-5">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-8">
+        <span class="badge text-bg-primary mb-2">bsprose.js · v1.2.4</span>
+        <h1 class="display-5 fw-bold mb-3">BsProse — живое демо</h1>
+        <p class="lead mb-3">
+          Крошечный WYSIWYG-редактор для сайтов на <strong>Bootstrap&nbsp;5</strong>: один файл,
+          без сборки, без зависимостей. Он позволяет писать форматированный текст <em>и</em> вставлять
+          нативные компоненты Bootstrap (alert, card, accordion, grid, carousel...), которые переживают
+          редактирование <strong>байт-в-байт</strong>.
+        </p>
+        <div class="d-flex flex-wrap gap-2">
+          <a href="#ex-1" class="btn btn-primary">Перейти к примерам</a>
+          <a href="#cheatsheet" class="btn btn-outline-secondary">Шпаргалка по опциям</a>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h6 class="card-subtitle text-body-secondary mb-2">Минимальная интеграция</h6>
+            <pre class="bsp-code p-3 mb-0"><code><span class="tok-key">const</span> ed = BsProse.<span class="tok-key">create</span>(<span class="tok-str">'#editor'</span>, {
+  value: html,
+  onChange: h =&gt; field.value = h
+});</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container py-5">
+  <div class="row g-4">
+
+    <!-- ─────────── Sidebar navigation ─────────── -->
+    <nav class="col-lg-3 d-none d-lg-block">
+      <div class="position-sticky bsp-sticky-nav">
+        <div id="bsp-nav" class="list-group shadow-sm">
+          <a href="#intro" class="list-group-item list-group-item-action">Введение</a>
+          <a href="#ex-1" class="list-group-item list-group-item-action">1. Полный редактор</a>
+          <a href="#ex-2" class="list-group-item list-group-item-action">2. Минимальная панель</a>
+          <a href="#ex-3" class="list-group-item list-group-item-action">3. Источники изображений</a>
+          <a href="#ex-4" class="list-group-item list-group-item-action">4. Свои компоненты</a>
+          <a href="#ex-5" class="list-group-item list-group-item-action">5. Тёмная тема + API</a>
+          <a href="#ex-6" class="list-group-item list-group-item-action">6. Адаптивные изображения</a>
+          <a href="#cheatsheet" class="list-group-item list-group-item-action">Шпаргалка</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ─────────── Main content ─────────── -->
+    <main class="col-lg-9">
+
+      <!-- Introduction -->
+      <section id="intro" class="bsp-section mb-5">
+        <h2 class="h3 border-bottom pb-2 mb-3">Введение</h2>
+        <p>
+          На этой странице размещено несколько <strong>независимых редакторов</strong>, каждый из которых
+          настроен по-своему, чтобы показать ключевые возможности библиотеки. Под каждым редактором есть
+          блок <span class="badge text-bg-secondary">Результат</span> — живой вывод
+          <code>getHTML()</code>, обновляемый через колбэк <code>onChange</code>.
+        </p>
+        <div class="alert alert-info d-flex gap-2" role="alert">
+          <span>&#9432;</span>
+          <div>
+            BsProse внедряет ~30 строк CSS (id <code>bsprose-css</code>), построенных на
+            CSS-переменных Bootstrap, поэтому отдельный стиль не нужен. JS-бандл Bootstrap
+            необязателен — он лишь обеспечивает живой предпросмотр интерактивных компонентов
+            (accordion / carousel / tabs) внутри редактора.
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════ EXAMPLE 1 ═══════════ -->
+      <section id="ex-1" class="bsp-section mb-5">
+        <div class="card shadow-sm">
+          <div class="card-header bg-transparent">
+            <h2 class="h4 mb-1">1. Полный редактор «из коробки»</h2>
+            <p class="text-body-secondary mb-0 small">
+              Панель по умолчанию: формат, B/I/U, цвета, выравнивание, ссылки, списки,
+              изображение по URL, видео, компоненты, сетка и переключение HTML.
+            </p>
+          </div>
+          <div class="card-body">
+            <p class="mb-2">
+              Здесь не передаётся ничего лишнего — только <code>value</code>, <code>placeholder</code>,
+              источник изображений <code>BsProse.imageUrl()</code> и <code>onChange</code>. Все
+              остальные опции (<code>grid</code>, <code>embed</code>, <code>sourceToggle</code>)
+              включены по умолчанию.
+            </p>
+            <pre class="bsp-code p-3"><code><span class="tok-com">// Пример 1 — конфигурация по умолчанию</span>
+BsProse.<span class="tok-key">create</span>(<span class="tok-str">'#editor-1'</span>, {
+  value: <span class="tok-str">'&lt;h2&gt;Hello!&lt;/h2&gt;This is &lt;b&gt;BsProse&lt;/b&gt;.'</span>,
+  placeholder: <span class="tok-str">'Начните писать свою страницу…'</span>,
+  image: { sources: [ BsProse.<span class="tok-key">imageUrl</span>() ] },
+  onChange: html =&gt; out1.textContent = html
+});</code></pre>
+            <label class="form-label fw-semibold">Редактор:</label>
+            <div id="editor-1"></div>
+            <div class="mt-3">
+              <span class="badge text-bg-secondary">Результат getHTML()</span>
+              <pre class="bsp-output border rounded bg-body p-2 mt-1 mb-0" id="out1"></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════ EXAMPLE 2 ═══════════ -->
+      <section id="ex-2" class="bsp-section mb-5">
+        <div class="card shadow-sm">
+          <div class="card-header bg-transparent">
+            <h2 class="h4 mb-1">2. Минимальная панель (комментарии блога)</h2>
+            <p class="text-body-secondary mb-0 small">
+              Урезанная <code>toolbar</code>, размер <code>sm</code>, без компонентов, сетки,
+              видео и переключения HTML.
+            </p>
+          </div>
+          <div class="card-body">
+            <p class="mb-2">
+              Мы передаём свой массив токенов <code>toolbar</code> и отключаем тяжёлые
+              возможности. Кнопки, чья функция не настроена, пропускаются автоматически.
+            </p>
+            <pre class="bsp-code p-3"><code><span class="tok-com">// Пример 2 — компактный набор инструментов</span>
+BsProse.<span class="tok-key">create</span>(<span class="tok-str">'#editor-2'</span>, {
+  toolbar: [<span class="tok-str">'bold'</span>, <span class="tok-str">'italic'</span>, <span class="tok-str">'underline'</span>, <span class="tok-str">'|'</span>,
+            <span class="tok-str">'link'</span>, <span class="tok-str">'bullet'</span>, <span class="tok-str">'number'</span>, <span class="tok-str">'|'</span>, <span class="tok-str">'clean'</span>],
+  toolbarSize: <span class="tok-str">'sm'</span>,
+  grid: <span class="tok-key">false</span>, embed: <span class="tok-key">false</span>, sourceToggle: <span class="tok-key">false</span>,
+  placeholder: <span class="tok-str">'Ваш комментарий…'</span>,
+  onChange: html =&gt; out2.textContent = html
+});</code></pre>
+            <label class="form-label fw-semibold">Редактор:</label>
+            <div id="editor-2"></div>
+            <div class="mt-3">
+              <span class="badge text-bg-secondary">Результат getHTML()</span>
+              <pre class="bsp-output border rounded bg-body p-2 mt-1 mb-0" id="out2"></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════ EXAMPLE 3 ═══════════ -->
+      <section id="ex-3" class="bsp-section mb-5">
+        <div class="card shadow-sm">
+          <div class="card-header bg-transparent">
+            <h2 class="h4 mb-1">3. Несколько источников изображений</h2>
+            <p class="text-body-secondary mb-0 small">
+              URL, загрузка файла (<code>imageUpload</code>) и свой источник «галерея».
+            </p>
+          </div>
+          <div class="card-body">
+            <p class="mb-2">
+              При нескольких источниках кнопка «изображение» сначала показывает выбор. Загрузка
+              указывает на встроенный <code>upload.php</code>; свой источник — это просто объект
+              <code>{ id, label, open(api) }</code>, который вызывает <code>api.insert(spec)</code>.
+            </p>
+            <pre class="bsp-code p-3"><code><span class="tok-com">// Пример 3 — три источника изображений</span>
+<span class="tok-key">const</span> gallery = {
+  id: <span class="tok-str">'gallery'</span>, label: <span class="tok-str">'Медиатека (демо)'</span>,
+  open(api) {
+    api.<span class="tok-key">insert</span>({
+      src: <span class="tok-str">'https://placehold.co/640x360'</span>,
+      alt: <span class="tok-str">'Случайное фото'</span>, class: <span class="tok-str">'img-fluid rounded shadow-sm'</span>
+    });
+  }
+};
+BsProse.<span class="tok-key">create</span>(<span class="tok-str">'#editor-3'</span>, {
+  image: { sources: [
+    BsProse.<span class="tok-key">imageUrl</span>(),
+    BsProse.<span class="tok-key">imageUpload</span>({ endpoint: <span class="tok-str">'upload.php'</span> }),
+    gallery
+  ]},
+  toolbar: [<span class="tok-str">'format'</span>, <span class="tok-str">'|'</span>, <span class="tok-str">'bold'</span>, <span class="tok-str">'italic'</span>, <span class="tok-str">'|'</span>, <span class="tok-str">'align'</span>, <span class="tok-str">'link'</span>, <span class="tok-str">'|'</span>, <span class="tok-str">'image'</span>],
+  onChange: html =&gt; out3.textContent = html
+});</code></pre>
+            <label class="form-label fw-semibold">Редактор:</label>
+            <div id="editor-3"></div>
+            <div class="mt-3">
+              <span class="badge text-bg-secondary">Результат getHTML()</span>
+              <pre class="bsp-output border rounded bg-body p-2 mt-1 mb-0" id="out3"></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════ EXAMPLE 4 ═══════════ -->
+      <section id="ex-4" class="bsp-section mb-5">
+        <div class="card shadow-sm">
+          <div class="card-header bg-transparent">
+            <h2 class="h4 mb-1">4. Каталог своих компонентов</h2>
+            <p class="text-body-secondary mb-0 small">
+              Расширьте <code>BsProse.components</code> своим шаблоном «Карточка тарифа».
+            </p>
+          </div>
+          <div class="card-body">
+            <p class="mb-2">
+              Компонент — это <code>{ id, group, label, html }</code>. Любой токен <code>{{id}}</code>
+              в шаблоне заменяется уникальным id при вставке. Здесь маркетинговый
+              блок добавлен к набору по умолчанию.
+            </p>
+            <pre class="bsp-code p-3"><code><span class="tok-com">// Пример 4 — расширение палитры компонентов</span>
+BsProse.<span class="tok-key">create</span>(<span class="tok-str">'#editor-4'</span>, {
+  components: [
+    ...BsProse.components,                <span class="tok-com">// сохраняем стандартные</span>
+    {
+      id: <span class="tok-str">'pricing'</span>, group: <span class="tok-str">'Маркетинг'</span>, label: <span class="tok-str">'Карточка тарифа'</span>,
+      html: <span class="tok-str">'&lt;div class="card text-center shadow-sm"&gt;'</span> +
+            <span class="tok-str">'&lt;div class="card-header"&gt;Pro&lt;/div&gt;'</span> +
+            <span class="tok-str">'&lt;div class="card-body"&gt;&lt;h3&gt;$29&lt;/h3&gt;'</span> +
+            <span class="tok-str">'&lt;a class="btn btn-primary"&gt;Choose&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;'</span>
+    }
+  ],
+  onChange: html =&gt; out4.textContent = html
+});</code></pre>
+            <label class="form-label fw-semibold">Редактор:</label>
+            <div id="editor-4"></div>
+            <div class="mt-3">
+              <span class="badge text-bg-secondary">Результат getHTML()</span>
+              <pre class="bsp-output border rounded bg-body p-2 mt-1 mb-0" id="out4"></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════ EXAMPLE 5 ═══════════ -->
+      <section id="ex-5" class="bsp-section mb-5">
+        <div class="card shadow-sm">
+          <div class="card-header bg-transparent d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <div>
+              <h2 class="h4 mb-1">5. Тёмная тема + методы Instance API</h2>
+              <p class="text-body-secondary mb-0 small">
+                <code>data-bs-theme="dark"</code> на контейнере и кнопки, вызывающие API.
+              </p>
+            </div>
+          </div>
+          <div class="card-body">
+            <p class="mb-2">
+              BsProse наследует тему через CSS-переменные Bootstrap. Кнопки ниже вызывают
+              методы экземпляра: <code>setHTML</code>, <code>getHTML</code>, <code>undo</code>,
+              <code>redo</code>, <code>setSourceMode</code>, <code>focus</code>.
+            </p>
+            <div class="d-flex flex-wrap gap-2 mb-3">
+              <button class="btn btn-sm btn-outline-primary" id="btn-set">setHTML(...)</button>
+              <button class="btn btn-sm btn-outline-secondary" id="btn-get">getHTML() → alert</button>
+              <button class="btn btn-sm btn-outline-secondary" id="btn-undo">undo()</button>
+              <button class="btn btn-sm btn-outline-secondary" id="btn-redo">redo()</button>
+              <button class="btn btn-sm btn-outline-secondary" id="btn-src">переключить HTML</button>
+            </div>
+            <label class="form-label fw-semibold">Редактор (тёмная тема):</label>
+            <div id="editor-5" data-bs-theme="dark"></div>
+            <div class="mt-3">
+              <span class="badge text-bg-secondary">Результат getHTML()</span>
+              <pre class="bsp-output border rounded bg-body p-2 mt-1 mb-0" id="out5"></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════ EXAMPLE 6 ═══════════ -->
+      <section id="ex-6" class="bsp-section mb-5">
+        <div class="card shadow-sm">
+          <div class="card-header bg-transparent">
+            <h2 class="h4 mb-1">6. Адаптивные изображения: <code>srcset</code> &amp; <code>&lt;picture&gt;</code></h2>
+            <p class="text-body-secondary mb-0 small">
+              Спецификация изображения может нести <code>srcset</code>/<code>sizes</code> (DPR-зависимый
+              <code>&lt;img&gt;</code>) или <code>sources</code> (зависимый от вьюпорта <code>&lt;picture&gt;</code>).
+            </p>
+          </div>
+          <div class="card-body">
+            <p class="mb-2">
+              Любой источник изображения (URL, загрузка или своя галерея) разрешается в
+              <em>спецификацию изображения</em>. Помимо <code>src</code> можно добавить:
+            </p>
+            <ul class="mb-3">
+              <li>
+                <code>srcset</code> + <code>sizes</code> — редактор выводит обычный
+                <code>&lt;img srcset sizes&gt;</code>. Браузер выбирает кандидата по
+                отображаемому размеру <strong>× device-pixel-ratio</strong> — отлично для HiDPI/Retina,
+                но он никогда не уменьшает изображение, если больший файл уже закэширован.
+              </li>
+              <li>
+                <code>sources</code> — массив
+                <code>{ media, type, srcset, sizes }</code>. Редактор выдаёт
+                <code>&lt;picture&gt;</code> с правилами <code>&lt;source media&gt;</code>:
+                <strong>жёсткое переключение по вьюпорту</strong>, переоцениваемое при изменении размера (уже
+                окно → меньший файл). Обычный <code>&lt;img&gt;</code> становится
+                наибольшим/запасным вариантом и отбрасывает свои <code>srcset</code>/<code>sizes</code>.
+              </li>
+            </ul>
+            <p class="mb-2">
+              Два своих источника ниже вставляют каждый вариант. Откройте выбор изображения и выберите
+              один, затем изучите вывод <code>getHTML()</code>, чтобы увидеть <code>&lt;img srcset&gt;</code>
+              против <code>&lt;picture&gt;</code>.
+            </p>
+            <pre class="bsp-code p-3"><code><span class="tok-com">// Пример 6 — две спецификации адаптивных изображений</span>
+
+<span class="tok-com">// (a) DPR-зависимый &lt;img srcset sizes&gt;</span>
+<span class="tok-key">const</span> srcsetSource = {
+  id: <span class="tok-str">'srcset'</span>, label: <span class="tok-str">'Вставить &lt;img srcset&gt;'</span>,
+  open(api) {
+    api.<span class="tok-key">insert</span>({
+      src:    <span class="tok-str">'https://placehold.co/1280x720'</span>,
+      srcset: <span class="tok-str">'https://placehold.co/480x270 480w, '</span> +
+              <span class="tok-str">'https://placehold.co/960x540 960w, '</span> +
+              <span class="tok-str">'https://placehold.co/1280x720 1280w'</span>,
+      sizes:  <span class="tok-str">'(max-width: 960px) 100vw, 960px'</span>,
+      width: 1280, height: 720, alt: <span class="tok-str">'Адаптивное фото'</span>,
+      class: <span class="tok-str">'img-fluid rounded shadow-sm'</span>
+    });
+  }
+};
+
+<span class="tok-com">// (b) зависимый от вьюпорта &lt;picture&gt; через `sources`</span>
+<span class="tok-key">const</span> pictureSource = {
+  id: <span class="tok-str">'picture'</span>, label: <span class="tok-str">'Вставить &lt;picture&gt;'</span>,
+  open(api) {
+    api.<span class="tok-key">insert</span>({
+      src: <span class="tok-str">'https://placehold.co/1280x720'</span>,   <span class="tok-com">// запасной / наибольший</span>
+      sources: [
+        { media: <span class="tok-str">'(max-width: 575.98px)'</span>,  srcset: <span class="tok-str">'https://placehold.co/480x270'</span> },
+        { media: <span class="tok-str">'(max-width: 1199.98px)'</span>, srcset: <span class="tok-str">'https://placehold.co/960x540'</span> }
+      ],
+      width: 1280, height: 720, alt: <span class="tok-str">'Художественно скадрированное фото'</span>,
+      class: <span class="tok-str">'img-fluid rounded shadow-sm'</span>
+    });
+  }
+};
+
+BsProse.<span class="tok-key">create</span>(<span class="tok-str">'#editor-6'</span>, {
+  image: { sources: [ srcsetSource, pictureSource ] },
+  toolbar: [<span class="tok-str">'format'</span>, <span class="tok-str">'|'</span>, <span class="tok-str">'bold'</span>, <span class="tok-str">'italic'</span>, <span class="tok-str">'|'</span>, <span class="tok-str">'align'</span>, <span class="tok-str">'|'</span>, <span class="tok-str">'image'</span>],
+  onChange: html =&gt; out6.textContent = html
+});</code></pre>
+            <label class="form-label fw-semibold">Редактор:</label>
+            <div id="editor-6"></div>
+            <div class="mt-3">
+              <span class="badge text-bg-secondary">Результат getHTML()</span>
+              <pre class="bsp-output border rounded bg-body p-2 mt-1 mb-0" id="out6"></pre>
+            </div>
+            <p class="text-body-secondary small mt-3 mb-0">
+              Правило: передавайте только <code>srcset</code> для DPR-зависимого варианта по умолчанию; передавайте
+              <code>sources</code>, когда нужно жёсткое, художественное переключение по вьюпорту.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════ CHEAT SHEET ═══════════ -->
+      <section id="cheatsheet" class="bsp-section mb-4">
+        <h2 class="h3 border-bottom pb-2 mb-3">Шпаргалка по опциям</h2>
+        <div class="table-responsive">
+          <table class="table table-striped table-hover align-middle">
+            <thead>
+            <tr><th>Опция</th><th>Тип</th><th>По умолчанию</th><th>Значение</th></tr>
+            </thead>
+            <tbody>
+            <tr><td><code>value</code></td><td>string</td><td><code>''</code></td><td>Начальный HTML.</td></tr>
+            <tr><td><code>onChange</code></td><td>(html)=&gt;void</td><td>—</td><td>Вызывается при изменениях (дебаунс ~120мс).</td></tr>
+            <tr><td><code>placeholder</code></td><td>string</td><td><code>Start writing…</code></td><td>Показывается, когда редактор пуст.</td></tr>
+            <tr><td><code>toolbar</code></td><td>string[]</td><td>полный набор</td><td>Порядок токенов панели; <code>'|'</code> — разделитель.</td></tr>
+            <tr><td><code>components</code></td><td>Component[]</td><td><code>BsProse.components</code></td><td>Палитра компонентов; <code>[]</code> скрывает кнопку.</td></tr>
+            <tr><td><code>image</code></td><td>{ sources:[] }</td><td><code>undefined</code></td><td>Источники изображений; иначе кнопка скрыта.</td></tr>
+            <tr><td><code>grid</code></td><td>boolean</td><td><code>true</code></td><td>Визуальный конструктор сетки.</td></tr>
+            <tr><td><code>embed</code></td><td>boolean</td><td><code>true</code></td><td>Вставка видео в блок <code>ratio</code>.</td></tr>
+            <tr><td><code>toolbarSize</code></td><td>sm|md|lg</td><td><code>md</code></td><td>Размер элементов панели.</td></tr>
+            <tr><td><code>historyLimit</code></td><td>number</td><td><code>120</code></td><td>Глубина undo/redo.</td></tr>
+            <tr><td><code>sourceToggle</code></td><td>boolean</td><td><code>true</code></td><td>Переключение HTML-источника (всегда справа).</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="text-body-secondary small mb-0">
+          Токены панели: <code>format</code>, <code>bold</code>, <code>italic</code>,
+          <code>underline</code>, <code>color</code>, <code>bgcolor</code>, <code>align</code>,
+          <code>link</code>, <code>bullet</code>, <code>number</code>, <code>image</code>,
+          <code>embed</code>, <code>component</code>, <code>grid</code>, <code>clean</code>,
+          <code>|</code>.
+        </p>
+        <p class="text-body-secondary small mb-0 mt-2">
+          Поля спецификации изображения: <code>src</code> (обязательно), <code>srcset</code>, <code>sizes</code>
+          (→ адаптивный <code>&lt;img&gt;</code>), <code>sources</code> (→ <code>&lt;picture&gt;</code>),
+          <code>alt</code>, <code>width</code>, <code>height</code>, <code>class</code>. См. пример 6.
+        </p>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- ════════════════════ FOOTER ════════════════════ -->
+<footer class="border-top bg-body">
+  <div class="container py-4 text-center text-body-secondary small">
+    <div class="d-flex flex-wrap justify-content-center gap-3 mb-2">
+      <a class="link-secondary text-decoration-none d-inline-flex align-items-center gap-1" href="https://github.com/redzru/BsProse" target="_blank" rel="noopener">
+        <i class="bi bi-github"></i> GitHub
+      </a>
+      <a class="link-secondary text-decoration-none d-inline-flex align-items-center gap-1" href="https://github.com/redzru/BsProse/blob/master/changelog.md" target="_blank" rel="noopener">
+        <i class="bi bi-card-list"></i> Список изменений
+      </a>
+      <a class="link-secondary text-decoration-none d-inline-flex align-items-center gap-1" href="https://github.com/redzru/BsProse/blob/master/README.md" target="_blank" rel="noopener">
+        <i class="bi bi-book"></i> Документация
+      </a>
+    </div>
+    Демо-страница для <strong>bsprose.js</strong> · v1.2.4 · MIT ·
+    Bootstrap 5.3.8 (CSS + JS bundle) загружен из CDN.
+  </div>
+</footer>
+
+<!-- Bootstrap 5.3.8 JS bundle (optional, powers component live preview + scrollspy) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+
+<!-- The library itself -->
+<script src="bsprose-1.2.4.min.js"></script>
+
+<!-- Initialise all demo editors -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const out1 = document.getElementById('out1');
+    const out2 = document.getElementById('out2');
+    const out3 = document.getElementById('out3');
+    const out4 = document.getElementById('out4');
+    const out5 = document.getElementById('out5');
+    const out6 = document.getElementById('out6');
+
+    // ── Example 1: full default editor ──
+    const ed1 = BsProse.create('#editor-1', {
+      value: '<h2>Привет!</h2>Это редактор <b>BsProse</b> с полным набором инструментов.<br>' +
+        'Попробуйте вставить <i>alert</i>, <i>card</i> или изображение по URL.',
+      placeholder: 'Начните писать свою страницу…',
+      image: { sources: [ BsProse.imageUrl() ] },
+      onChange: function (html) { out1.textContent = html; }
+    });
+    out1.textContent = ed1.getHTML();
+
+    // ── Example 2: minimal toolbar ──
+    const ed2 = BsProse.create('#editor-2', {
+      toolbar: ['bold', 'italic', 'underline', '|', 'link', 'bullet', 'number', '|', 'clean'],
+      toolbarSize: 'sm',
+      grid: false, embed: false, sourceToggle: false,
+      value: 'Короткий редактор для комментариев — только базовое форматирование.',
+      placeholder: 'Ваш комментарий…',
+      onChange: function (html) { out2.textContent = html; }
+    });
+    out2.textContent = ed2.getHTML();
+
+    // ── Example 3: multiple image sources ──
+    const gallery = {
+      id: 'gallery', label: 'Медиатека (демо)',
+      open: function (api) {
+        api.insert({
+          src: 'https://placehold.co/640x360',
+          alt: 'Случайное фото', width: 640, height: 360,
+          class: 'img-fluid rounded shadow-sm'
+        });
+      }
+    };
+    const ed3 = BsProse.create('#editor-3', {
+      image: { sources: [
+          BsProse.imageUrl(),
+          BsProse.imageUpload({ endpoint: 'upload.php' }),
+          gallery
+        ]},
+      toolbar: ['format', '|', 'bold', 'italic', '|', 'align', 'link', '|', 'image'],
+      value: '<h3>Вставка изображений</h3>Нажмите кнопку изображения — появится выбор из трёх источников.',
+      onChange: function (html) { out3.textContent = html; }
+    });
+    out3.textContent = ed3.getHTML();
+
+    // ── Example 4: custom component catalog ──
+    const ed4 = BsProse.create('#editor-4', {
+      components: BsProse.components.concat([
+        {
+          id: 'pricing', group: 'Маркетинг', label: 'Карточка тарифа',
+          html: '<div class="card text-center shadow-sm" style="max-width:18rem">' +
+            '<div class="card-header fw-semibold">Pro</div>' +
+            '<div class="card-body"><h3 class="card-title">$29<small class="text-body-secondary fs-6">/мес</small></h3>' +
+            '<p class="card-text">Всё, что нужно вашей команде.</p>' +
+            '<a href="#" class="btn btn-primary">Выбрать план</a></div></div>'
+        }
+      ]),
+      value: '<h3>Свои компоненты</h3>Откройте палитру компонентов — внизу появится группа «Маркетинг».',
+      onChange: function (html) { out4.textContent = html; }
+    });
+    out4.textContent = ed4.getHTML();
+
+    // ── Example 5: dark theme + Instance API ──
+    const ed5 = BsProse.create('#editor-5', {
+      value: '<h3>Тёмная тема</h3>Этот редактор наследует <code>data-bs-theme="dark"</code>.<br>' +
+        'Используйте кнопки выше для вызова методов API.',
+      image: { sources: [ BsProse.imageUrl() ] },
+      onChange: function (html) { out5.textContent = html; }
+    });
+    out5.textContent = ed5.getHTML();
+
+    document.getElementById('btn-set').addEventListener('click', function () {
+      ed5.setHTML('<h2>Загружено через setHTML()</h2>' +
+        '<div class="alert alert-success" role="alert">Документ был полностью заменён.</div>');
+    });
+    document.getElementById('btn-get').addEventListener('click', function () {
+      alert(ed5.getHTML());
+    });
+    document.getElementById('btn-undo').addEventListener('click', function () { ed5.undo(); });
+    document.getElementById('btn-redo').addEventListener('click', function () { ed5.redo(); });
+    document.getElementById('btn-src').addEventListener('click', function () {
+      ed5.setSourceMode(!ed5.isSourceMode());
+    });
+
+    // ── Example 6: responsive images (srcset & <picture>) ──
+    const srcsetSource = {
+      id: 'srcset', label: 'Вставить <img srcset>',
+      open: function (api) {
+        api.insert({
+          src: 'https://placehold.co/1280x720',
+          srcset: 'https://placehold.co/480x270 480w, ' +
+            'https://placehold.co/960x540 960w, ' +
+            'https://placehold.co/1280x720 1280w',
+          sizes: '(max-width: 960px) 100vw, 960px',
+          width: 1280, height: 720, alt: 'Адаптивное фото',
+          class: 'img-fluid rounded shadow-sm'
+        });
+      }
+    };
+    const pictureSource = {
+      id: 'picture', label: 'Вставить <picture>',
+      open: function (api) {
+        api.insert({
+          src: 'https://placehold.co/1280x720',
+          sources: [
+            { media: '(max-width: 575.98px)', srcset: 'https://placehold.co/480x270' },
+            { media: '(max-width: 1199.98px)', srcset: 'https://placehold.co/960x540' }
+          ],
+          width: 1280, height: 720, alt: 'Художественно скадрированное фото',
+          class: 'img-fluid rounded shadow-sm'
+        });
+      }
+    };
+    const ed6 = BsProse.create('#editor-6', {
+      image: { sources: [ srcsetSource, pictureSource ] },
+      toolbar: ['format', '|', 'bold', 'italic', '|', 'align', '|', 'image'],
+      value: '<h3>Адаптивные изображения</h3>Откройте выбор изображения и выберите вариант, затем проверьте вывод ниже.',
+      onChange: function (html) { out6.textContent = html; }
+    });
+    out6.textContent = ed6.getHTML();
+
+    const spy = window.bootstrap.ScrollSpy.getOrCreateInstance(document.body);
+    if (spy) { spy.refresh(); }
+  });
+</script>
+</body>
+</html>
