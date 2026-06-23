@@ -49,7 +49,7 @@ the host decides the breakpoints and builds `sources`; the engine just renders w
 ## Pluggable image sources
 `image.sources[]`: built-ins `BsProse.imageUrl()` and `BsProse.imageUpload({ send | endpoint, map, … })`, plus
 custom `{ id, label, open(api) }` providers that call `api.insert(spec)`. With more than one source the editor
-shows a chooser. The image spec is `{ src, srcset?, sizes?, sources?, alt?, width?, height?, class? }`.
+shows a chooser. The image spec is `{ src, srcset?, sizes?, sources?, alt?, title?, width?, height?, class? }`.
 
 ## Gotchas / host integration
 - Peer dependency: Bootstrap 5 CSS (always) + the JS bundle (only for live preview of interactive islands —

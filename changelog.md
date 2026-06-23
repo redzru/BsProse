@@ -3,6 +3,8 @@
 All notable changes to **bsprose.js**. Versions are BsProse's own and independent of any host
 application's versioning. Listed newest → oldest.
 
+## 1.2.5 — add title
+- add title to images
 
 ## 1.2.4 — Headings & responsive images
 - Format menu offers explicit **Heading 1–5** (`formatBlock` replaces the block tag, so h1→h2 changes the

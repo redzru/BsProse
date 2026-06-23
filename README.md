@@ -244,6 +244,7 @@ Every source ultimately resolves an object the editor turns into a responsive `<
   sizes?:  string,  // e.g. "(max-width: 960px) 100vw, 960px"
   sources?: Array<{ media?: string, type?: string, srcset: string, sizes?: string }>,  // → <picture>
   alt?:    string,
+  title?:    string,
   width?:  number,
   height?: number,
   class?:  string   // default "img-fluid"
@@ -437,14 +438,14 @@ const toRel = h => h.split(MEDIA_BASE + '/assets/media/').join('/assets/media/')
 const gallery = { id:'gallery', label:'Media library', open(api){
   openMediaPickModal(m => api.insert({                    // m = a picked library item
     src: toAbs(m.src), srcset: toAbs(m.srcset), sizes: m.sizes,
-    alt: m.alt, width: m.width, height: m.height, class:'img-fluid rounded'
+    alt: m.alt, title: m.title, width: m.width, height: m.height, class:'img-fluid rounded'
   }));
 }};
 
 const upload = BsProse.imageUpload({
   send: file => RZ.post('/site/ajax.Media.php', { ACTION:'upload', file })
     .then(r => r.ok ? { src:toAbs(r.src), srcset:toAbs(r.srcset), sizes:r.sizes,
-                        width:r.width, height:r.height, alt:r.alt, class:'img-fluid rounded' }
+                        width:r.width, height:r.height, alt:r.alt, title:r.title, class:'img-fluid rounded' }
                     : { error:r.error });
 });
 

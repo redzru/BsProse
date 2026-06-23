@@ -24,7 +24,7 @@
  * class, so a future Bootstrap only means updating the `components` templates.
  *
  * No build step, no framework, one global: `window.BsProse`.
- * @version 1.2.4
+ * @version 1.2.5
  * @license MIT
  */
 (function (global) {
@@ -770,7 +770,7 @@
 		function a(k, v) { return v != null && v !== '' ? ' ' + k + '="' + esc(v) + '"' : ''; }
 		var hasPic = s.sources && s.sources.length;
 		var img = '<img src="' + esc(s.src) + '"' + (hasPic ? '' : a('srcset', s.srcset) + a('sizes', s.sizes))
-			+ a('width', s.width) + a('height', s.height)
+			+ a('width', s.width) + a('height', s.height) + a('title', s.title)
 			+ ' loading="lazy" decoding="async" alt="' + esc(s.alt || '') + '" class="' + esc(s['class'] || 'img-fluid') + '">';
 		if (!hasPic) { return img; }
 		var srcs = s.sources.map(function (so) { return '<source' + a('media', so.media) + a('type', so.type) + a('srcset', so.srcset) + a('sizes', so.sizes) + '>'; }).join('');
@@ -1160,6 +1160,6 @@
 		imageUrl: imageUrl,
 		imageUpload: imageUpload,
 		components: DEFAULT_COMPONENTS,
-		version: '1.2.4'
+		version: '1.2.5'
 	};
 })(window);

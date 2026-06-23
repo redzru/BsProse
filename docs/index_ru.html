@@ -99,7 +99,7 @@
   <div class="container py-5">
     <div class="row align-items-center g-4">
       <div class="col-lg-8">
-        <span class="badge text-bg-primary mb-2">bsprose.js · v1.2.4</span>
+        <span class="badge text-bg-primary mb-2">bsprose.js · v1.2.5</span>
         <h1 class="display-5 fw-bold mb-3">BsProse — живое демо</h1>
         <p class="lead mb-3">
           Крошечный WYSIWYG-редактор для сайтов на <strong>Bootstrap&nbsp;5</strong>: один файл,
@@ -258,7 +258,7 @@ BsProse.<span class="tok-key">create</span>(<span class="tok-str">'#editor-2'</s
   open(api) {
     api.<span class="tok-key">insert</span>({
       src: <span class="tok-str">'https://placehold.co/640x360'</span>,
-      alt: <span class="tok-str">'Случайное фото'</span>, class: <span class="tok-str">'img-fluid rounded shadow-sm'</span>
+      alt: <span class="tok-str">'Случайное фото'</span>, title: <span class="tok-str">'Случайное фото'</span>, class: <span class="tok-str">'img-fluid rounded shadow-sm'</span>
     });
   }
 };
@@ -402,7 +402,7 @@ BsProse.<span class="tok-key">create</span>(<span class="tok-str">'#editor-4'</s
               <span class="tok-str">'https://placehold.co/960x540 960w, '</span> +
               <span class="tok-str">'https://placehold.co/1280x720 1280w'</span>,
       sizes:  <span class="tok-str">'(max-width: 960px) 100vw, 960px'</span>,
-      width: 1280, height: 720, alt: <span class="tok-str">'Адаптивное фото'</span>,
+      width: 1280, height: 720, alt: <span class="tok-str">'Адаптивное фото'</span>, title: <span class="tok-str">'Адаптивное фото'</span>,
       class: <span class="tok-str">'img-fluid rounded shadow-sm'</span>
     });
   }
@@ -418,7 +418,7 @@ BsProse.<span class="tok-key">create</span>(<span class="tok-str">'#editor-4'</s
         { media: <span class="tok-str">'(max-width: 575.98px)'</span>,  srcset: <span class="tok-str">'https://placehold.co/480x270'</span> },
         { media: <span class="tok-str">'(max-width: 1199.98px)'</span>, srcset: <span class="tok-str">'https://placehold.co/960x540'</span> }
       ],
-      width: 1280, height: 720, alt: <span class="tok-str">'Художественно скадрированное фото'</span>,
+      width: 1280, height: 720, alt: <span class="tok-str">'Художественно скадрированное фото'</span>, title: <span class="tok-str">'Художественно скадрированное фото'</span>,
       class: <span class="tok-str">'img-fluid rounded shadow-sm'</span>
     });
   }
@@ -476,7 +476,7 @@ BsProse.<span class="tok-key">create</span>(<span class="tok-str">'#editor-6'</s
         <p class="text-body-secondary small mb-0 mt-2">
           Поля спецификации изображения: <code>src</code> (обязательно), <code>srcset</code>, <code>sizes</code>
           (→ адаптивный <code>&lt;img&gt;</code>), <code>sources</code> (→ <code>&lt;picture&gt;</code>),
-          <code>alt</code>, <code>width</code>, <code>height</code>, <code>class</code>. См. пример 6.
+          <code>alt</code>, <code>title</code>, <code>width</code>, <code>height</code>, <code>class</code>. См. пример 6.
         </p>
       </section>
 
@@ -498,7 +498,7 @@ BsProse.<span class="tok-key">create</span>(<span class="tok-str">'#editor-6'</s
         <i class="bi bi-book"></i> Документация
       </a>
     </div>
-    Демо-страница для <strong>bsprose.js</strong> · v1.2.4 · MIT ·
+    Демо-страница для <strong>bsprose.js</strong> · v1.2.5 · MIT ·
     Bootstrap 5.3.8 (CSS + JS bundle) загружен из CDN.
   </div>
 </footer>
@@ -508,7 +508,7 @@ BsProse.<span class="tok-key">create</span>(<span class="tok-str">'#editor-6'</s
         crossorigin="anonymous"></script>
 
 <!-- The library itself -->
-<script src="bsprose-1.2.4.min.js"></script>
+<script src="bsprose-1.2.5.min.js"></script>
 
 <!-- Initialise all demo editors -->
 <script>
@@ -547,7 +547,7 @@ BsProse.<span class="tok-key">create</span>(<span class="tok-str">'#editor-6'</s
       open: function (api) {
         api.insert({
           src: 'https://placehold.co/640x360',
-          alt: 'Случайное фото', width: 640, height: 360,
+          alt: 'Случайное фото', title: 'Случайное фото', width: 640, height: 360,
           class: 'img-fluid rounded shadow-sm'
         });
       }
@@ -613,7 +613,7 @@ BsProse.<span class="tok-key">create</span>(<span class="tok-str">'#editor-6'</s
             'https://placehold.co/960x540 960w, ' +
             'https://placehold.co/1280x720 1280w',
           sizes: '(max-width: 960px) 100vw, 960px',
-          width: 1280, height: 720, alt: 'Адаптивное фото',
+          width: 1280, height: 720, alt: 'Адаптивное фото', title: 'Адаптивное фото',
           class: 'img-fluid rounded shadow-sm'
         });
       }
@@ -627,7 +627,7 @@ BsProse.<span class="tok-key">create</span>(<span class="tok-str">'#editor-6'</s
             { media: '(max-width: 575.98px)', srcset: 'https://placehold.co/480x270' },
             { media: '(max-width: 1199.98px)', srcset: 'https://placehold.co/960x540' }
           ],
-          width: 1280, height: 720, alt: 'Художественно скадрированное фото',
+          width: 1280, height: 720, alt: 'Художественно скадрированное фото', title: 'Художественно скадрированное фото',
           class: 'img-fluid rounded shadow-sm'
         });
       }
